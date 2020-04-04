@@ -49,7 +49,7 @@ end_msg "$MSG" $?
 chapter "Chapter 2. Package creation"
 MSG="Installing packages"
 begin_msg "$MSG"
-TMP=`sudo pacman --noconfirm -Sq alacritty fish zsh tmux neovim ttf-fira-code`
+TMP=`sudo pacman --noconfirm --needed -Sq alacritty fish zsh tmux neovim ttf-fira-code`
 end_msg "$MSG" $? "$TMP"
 
 chapter "Chapter 3. Custom keybinding creation"
