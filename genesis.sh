@@ -86,6 +86,7 @@ MSG="Configuring TMUX"
 begin_msg "$MSG"
 TMP=`cp -bf resources/tmux.conf ~/.tmux.conf`
 end_msg "$MSG" $? "$TMP"
+show_msg "Press prefix + I (capital i, as in Install)"
 
 chapter "Chapter 6. Starship cross-shell prompt creation"
 MSG="Downloading and installing starfish"
