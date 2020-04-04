@@ -1,0 +1,15 @@
+# Add local bin path
+X=`echo "$PATH" | grep "$HOME/bin"`
+if [ $? -eq 1 ]; then
+	export PATH="$PATH:$HOME/bin"
+fi
+
+# General configuration
+export BROWSER='open'
+export EDITOR='/usr/bin/nvim'
+export LANG='es_MX.UTF-8'
+export TERM='xterm-256color'
+export TERMINAL='alacritty'
+
+# Starship prompt (https://starship.rs/)
+eval "$(~/bin/starship init bash)"

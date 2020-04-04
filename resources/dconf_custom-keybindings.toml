@@ -1,0 +1,9 @@
+[custom0]
+binding='<Primary><Alt>t'
+command='/usr/bin/alacritty --config-file /home/{{USER}}/.config/alacritty/alacritty-binding.yml -e tmux new-session -A -s {{USER}} -n main '
+name='Terminal'
+
+[custom1]
+binding='<Primary><Alt>f'
+command='/usr/bin/nautilus --new-window'
+name='Archivos'
