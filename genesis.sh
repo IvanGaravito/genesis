@@ -98,6 +98,10 @@ MSG="Changing to Fish the default user shell"
 begin_msg "$MSG"
 TMP=`sudo usermod -s "$(which fish)" $USER`
 end_msg "$MSG" $? "$TMP"
+MSG="Creating Fish's configuration directory"
+begin_msg "$MSG"
+TMP=`mkdir -p ~/.config/fish`
+end_msg "$MSG" $? "$TMP"
 MSG="Configuring Fish shell"
 begin_msg "$MSG"
 TMP=`cp -bf resources/config.fish ~/.config/fish/`
