@@ -58,7 +58,7 @@ begin_msg "$MSG"
 if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ]; then
 	TMP=`sed "s/{{USER}}/$USER/g" resources/dconf_custom-keybindings.toml | dconf load '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/'`
 else
-	TMP=`false`
+	TMP=`echo "Using $XDG_CURRENT_DESKTOP, keybindings now available"; false`
 fi
 end_msg "$MSG" $? "$TMP"
 
