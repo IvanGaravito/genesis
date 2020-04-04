@@ -69,8 +69,8 @@ TMP=`mkdir -p ~/.config/alacritty`
 end_msg "$MSG" $? "$TMP"
 MSG="Configuring Alacritty"
 begin_msg "$MSG"
-TMP=`cp -bf resources/alacritty.yml ~/.config/alacritty/ig`
-TMP=`cp -bf resources/alacritty-binding.yml ~/.config/alacritty/ig`
+TMP=`cp -bf resources/alacritty.yml ~/.config/alacritty/`
+TMP=`cp -bf resources/alacritty-binding.yml ~/.config/alacritty/`
 end_msg "$MSG" $? "$TMP"
 
 chapter "Chapter 5. tmux terminal multiplexer creation"
