@@ -1,3 +1,5 @@
+
+# <<-- ivangaravito/genesis -->> #
 # Add local bin path
 X=`echo "$PATH" | grep "$HOME/bin"`
 if [ $? -eq 1 ]; then

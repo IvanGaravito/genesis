@@ -114,7 +114,12 @@ end_msg "$MSG" $? "$TMP"
 chapter "Chapter 8. Bash (main shell) creation"
 MSG="Configuring Bash shell"
 begin_msg "$MSG"
-TMP=`cat resources/bashrc >> ~/.bashrc`
+X=`cat ~/.bashrc | grep "# <<-- ivangaravito/genesis -->> #"`
+if [ -z "$X" ]; then
+	TMP=`cat resources/bashrc >> ~/.bashrc`
+else
+	TMP=`echo "Already configured!"`
+fi
 end_msg "$MSG" $? "$TMP"
 
 chapter "Chapter 9. Zsh (main shell) creation"
