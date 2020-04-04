@@ -80,7 +80,11 @@ TMP=`mkdir -p ~/.tmux/plugins`
 end_msg "$MSG" $? "$TMP"
 MSG="Downloading TMUX Plugin Manager (TPM)"
 begin_msg "$MSG"
-TMP=`git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm 2>&1`
+if [ -d "~/.tmux/plugins/tpm" ]; then
+	TMP=`cd ~/.tmux/plugins/tpm; git pull 2>&1`
+else
+	TMP=`git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm 2>&1`
+fi
 end_msg "$MSG" $? "$TMP"
 MSG="Configuring TMUX"
 begin_msg "$MSG"
@@ -140,6 +144,10 @@ TMP=`cp -bf resources/vimrc ~/.config/nvim/init.vim`
 end_msg "$MSG" $? "$TMP"
 MSG="Installing Vundle.vim"
 begin_msg "$MSG"
-TMP=`git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim 2>&1`
+if [ -d "~/.vim/bundle/Vundle.vim" ]; then
+	TMP=`cd ~/.vim/bundle/Vundle.vim; git pull 2>&1`
+else
+	TMP=`git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim 2>&1`
+fi
 end_msg "$MSG" $? "$TMP"
 show_msg "Enter nvim and type ':PluginInstall' to install plugins"
