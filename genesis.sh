@@ -31,6 +31,10 @@ end_msg () {
 	fi
 }
 
+show_msg () {
+	echo -en "  ${chat_blue}➜${chat_reset} $1"
+}
+
 echo "Genesis started, recreating my personal configuration"
 
 chapter "Chapter 1. Directory creation"
@@ -118,3 +122,18 @@ MSG="Configuring Zsh shell"
 begin_msg "$MSG"
 TMP=`cp -bf resources/zshrc ~/.zshrc`
 end_msg "$MSG" $? "$TMP"
+
+chapter "Chapter 10. NeoVim creation"
+MSG="Creating NeoVim's configuration directory"
+begin_msg "$MSG"
+TMP=`mkdir -p ~/.config/nvim ~/.vim/bundle`
+end_msg "$MSG" $? "$TMP"
+MSG="Configuring NeoVim"
+begin_msg "$MSG"
+TMP=`cp -bf resources/vimrc ~/.config/nvim/init.vim`
+end_msg "$MSG" $? "$TMP"
+MSG="Installing Vundle.vim"
+begin_msg "$MSG"
+TMP=`git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim 2>&1`
+end_msg "$MSG" $? "$TMP"
+show_msg "Enter nvim and type ':PluginInstall' to install plugins"
