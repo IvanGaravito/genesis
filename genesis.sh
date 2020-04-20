@@ -41,7 +41,8 @@ chapter "Chapter 1. Directory creation"
 MSG="Making user directories"
 begin_msg "$MSG"
 mkdir -p ~/apps && \
-mkdir -p ~/bin && \
+mkdir -p ~/.local/bin && \
+ln -s ~/.local/bin ~/bin && \
 mkdir -p ~/dev && \
 mkdir -p ~/dev-3rd-party
 end_msg "$MSG" $?
