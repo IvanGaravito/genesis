@@ -151,3 +151,22 @@ else
 fi
 end_msg "$MSG" $? "$TMP"
 show_msg "Enter nvim and type ':PluginInstall' to install plugins"
+
+chapter "Chapter 11. TMUX Terminal creation"
+MSG="Downloading TMUX logo"
+begin_msg "$MSG"
+TMP=`curl https://raw.githubusercontent.com/tmux/tmux/master/logo/tmux-logomark.svg > ~/.local/share/icons/tmux-logomark.svg`
+end_msg "$MSG" $? "$TMP"
+MSG="Installing scripts for TMUX Terminal"
+begin_msg "$MSG"
+TMP=`cp -bf resources/tmux-terminal.sh ~/bin/`
+TMP=`cp -bf resources/tmux-terminal-cmd.sh ~/bin/`
+end_msg "$MSG" $? "$TMP"
+MSG="Installing XDG desktop menu for TMUX Terminal"
+begin_msg "$MSG"
+TMP=`sed "s@{{HOME}}@$HOME@g" resources/tmux-terminal.desktop > ~/.local/share/applications/tmux-terminal.desktop`
+end_msg "$MSG" $? "$TMP"
+MSG="Updating XDG desktop menu entries"
+begin_msg "$MSG"
+TMP=`xdg-desktop-menu forceupdate`
+end_msg "$MSG" $? "$TMP"
