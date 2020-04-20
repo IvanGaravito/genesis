@@ -56,11 +56,18 @@ end_msg "$MSG" $? "$TMP"
 chapter "Chapter 3. Custom keybinding creation"
 MSG="Configuring custom keybinding"
 begin_msg "$MSG"
-if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ]; then
-	TMP=`sed "s/{{USER}}/$USER/g" resources/dconf_custom-keybindings.toml | dconf load '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/'`
-else
-	TMP=`echo "Using $XDG_CURRENT_DESKTOP, keybindings now available"; false`
-fi
+case "$XDG_CURRENT_DESKTOP" in
+	GNOME)
+		TMP=`sed "s@{{HOME}}@$HOME@g" resources/dconf_custom-keybindings.toml | dconf load '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/'`
+		;;
+	XFCE)
+		TMP=`xfconf-query -c xfce4-keyboard-shortcuts -np "/commands/custom/F12" -t string -s "xfce4-terminal --drop-down"`
+		TMP=`xfconf-query -c xfce4-keyboard-shortcuts -np "/commands/custom/<Primary><Alt>t" -t string -s "tmux-terminal.sh"`
+		;;
+	*)
+		TMP=`echo "Using $XDG_CURRENT_DESKTOP, keybindings now available"; false`
+		;;
+esac
 end_msg "$MSG" $? "$TMP"
 
 chapter "Chapter 4. Alacritty terminal creation"
