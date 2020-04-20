@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+TryExec={{HOME}}/bin/tmux-terminal.sh
+Exec={{HOME}}/bin/tmux-terminal.sh
+Icon=tmux-logomark
+Terminal=false
+Categories=System;TerminalEmulator;
+X-DBUS-StartupType=Unique
+StartupNotify=true
+X-KDE-AuthorizeAction=shell_access
+StartupWMClass=TMUXterminal
+
+Name=TMUX Terminal
+GenericName=Terminal
+Comment=TMUX Terminal from genesis project
