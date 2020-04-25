@@ -48,38 +48,56 @@ mkdir -p ~/dev-3rd-party
 end_msg "$MSG" $?
 
 chapter "Chapter 2. Package creation"
-MSG="Installing packages"
+TTY_PKGS="fish zsh tmux neovim"
+X11_PKGS="alacritty xsel xclip ttf-fira-code"
+PKGS=
+if [ "$XDG_SESSION_TYPE" = "tty" ]; then
+	MSG="Installing TTY packages"
+	PKGS="$TTY_PKGS"
+else
+	MSG="Installing X11 packages"
+	PKGS="$X11_PKGS $TTY_PKGS"
+fi
 begin_msg "$MSG"
-TMP=`sudo pacman --noconfirm --needed -Sq alacritty fish zsh tmux neovim xsel xclip ttf-fira-code`
+TMP=`sudo pacman --noconfirm --needed -Sq $PKGS`
 end_msg "$MSG" $? "$TMP"
 
 chapter "Chapter 3. Custom keybinding creation"
-MSG="Configuring custom keybinding"
-begin_msg "$MSG"
-case "$XDG_CURRENT_DESKTOP" in
-	GNOME)
-		TMP=`sed "s@{{HOME}}@$HOME@g" resources/dconf_custom-keybindings.toml | dconf load '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/'`
-		;;
-	XFCE)
-		TMP=`xfconf-query -c xfce4-keyboard-shortcuts -np "/commands/custom/F12" -t string -s "xfce4-terminal --drop-down"`
-		TMP=`xfconf-query -c xfce4-keyboard-shortcuts -np "/commands/custom/<Primary><Alt>t" -t string -s "tmux-terminal.sh"`
-		;;
-	*)
-		TMP=`echo "Using $XDG_CURRENT_DESKTOP, keybindings now available"; false`
-		;;
-esac
-end_msg "$MSG" $? "$TMP"
+if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+	MSG="Configuring custom keybinding"
+	begin_msg "$MSG"
+	case "$XDG_CURRENT_DESKTOP" in
+		GNOME)
+			TMP=`sed "s@{{HOME}}@$HOME@g" resources/dconf_custom-keybindings.toml | dconf load '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/'`
+			;;
+		XFCE)
+			TMP=`xfconf-query -c xfce4-keyboard-shortcuts -np "/commands/custom/F12" -t string -s "xfce4-terminal --drop-down"`
+			TMP=`xfconf-query -c xfce4-keyboard-shortcuts -np "/commands/custom/<Primary><Alt>t" -t string -s "tmux-terminal.sh"`
+			;;
+		*)
+			TMP=`echo "Using $XDG_CURRENT_DESKTOP, keybindings now available"; false`
+			;;
+	esac
+	end_msg "$MSG" $? "$TMP"
+else
+	show_msg "Skipping because this is a TTY environment"
+fi
 
 chapter "Chapter 4. Alacritty terminal creation"
-MSG="Making Alacritty configuration's directory"
-begin_msg "$MSG"
-TMP=`mkdir -p ~/.config/alacritty`
-end_msg "$MSG" $? "$TMP"
-MSG="Configuring Alacritty"
-begin_msg "$MSG"
-TMP=`cp -bf resources/alacritty.yml ~/.config/alacritty/`
-TMP=`cp -bf resources/alacritty-binding.yml ~/.config/alacritty/`
-end_msg "$MSG" $? "$TMP"
+if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+	MSG="Making Alacritty configuration's directory"
+	begin_msg "$MSG"
+	TMP=`mkdir -p ~/.config/alacritty`
+	end_msg "$MSG" $? "$TMP"
+	MSG="Configuring Alacritty"
+	begin_msg "$MSG"
+	TMP=`cp -bf resources/alacritty.yml ~/.config/alacritty/`
+	TMP=`cp -bf resources/alacritty-binding.yml ~/.config/alacritty/`
+	end_msg "$MSG" $? "$TMP"
+else
+	show_msg "Skipping because this is a TTY environment"
+fi
+
 
 chapter "Chapter 5. tmux terminal multiplexer creation"
 MSG="Making TMUX plugins directory"
@@ -161,20 +179,24 @@ end_msg "$MSG" $? "$TMP"
 show_msg "Enter nvim and type ':PluginInstall' to install plugins"
 
 chapter "Chapter 11. TMUX Terminal creation"
-MSG="Downloading TMUX logo"
-begin_msg "$MSG"
-TMP=`curl https://raw.githubusercontent.com/tmux/tmux/master/logo/tmux-logomark.svg > ~/.local/share/icons/tmux-logomark.svg`
-end_msg "$MSG" $? "$TMP"
-MSG="Installing scripts for TMUX Terminal"
-begin_msg "$MSG"
-TMP=`cp -bf resources/tmux-terminal.sh ~/bin/`
-TMP=`cp -bf resources/tmux-terminal-cmd.sh ~/bin/`
-end_msg "$MSG" $? "$TMP"
-MSG="Installing XDG desktop menu for TMUX Terminal"
-begin_msg "$MSG"
-TMP=`sed "s@{{HOME}}@$HOME@g" resources/tmux-terminal.desktop > ~/.local/share/applications/tmux-terminal.desktop`
-end_msg "$MSG" $? "$TMP"
-MSG="Updating XDG desktop menu entries"
-begin_msg "$MSG"
-TMP=`xdg-desktop-menu forceupdate`
-end_msg "$MSG" $? "$TMP"
+if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+	MSG="Downloading TMUX logo"
+	begin_msg "$MSG"
+	TMP=`curl https://raw.githubusercontent.com/tmux/tmux/master/logo/tmux-logomark.svg > ~/.local/share/icons/tmux-logomark.svg`
+	end_msg "$MSG" $? "$TMP"
+	MSG="Installing scripts for TMUX Terminal"
+	begin_msg "$MSG"
+	TMP=`cp -bf resources/tmux-terminal.sh ~/bin/`
+	TMP=`cp -bf resources/tmux-terminal-cmd.sh ~/bin/`
+	end_msg "$MSG" $? "$TMP"
+	MSG="Installing XDG desktop menu for TMUX Terminal"
+	begin_msg "$MSG"
+	TMP=`sed "s@{{HOME}}@$HOME@g" resources/tmux-terminal.desktop > ~/.local/share/applications/tmux-terminal.desktop`
+	end_msg "$MSG" $? "$TMP"
+	MSG="Updating XDG desktop menu entries"
+	begin_msg "$MSG"
+	TMP=`xdg-desktop-menu forceupdate`
+	end_msg "$MSG" $? "$TMP"
+else
+	show_msg "Skipping because this is a TTY environment"
+fi
