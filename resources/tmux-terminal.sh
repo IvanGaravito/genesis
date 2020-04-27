@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 CMD_TMUX="$HOME/bin/tmux-terminal-cmd.sh"
 
