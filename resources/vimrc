@@ -1,91 +1,125 @@
-version 6.0
-if &cp | set nocp | endif
-let s:cpo_save=&cpo
-set cpo&vim
-nmap <silent> \cv <Plug>VCSVimDiff
-nmap <silent> \cu <Plug>VCSUpdate
-nmap <silent> \cU <Plug>VCSUnlock
-nmap <silent> \cs <Plug>VCSStatus
-nmap <silent> \cr <Plug>VCSReview
-nmap <silent> \cq <Plug>VCSRevert
-nmap <silent> \cn <Plug>VCSAnnotate
-nmap <silent> \cN <Plug>VCSSplitAnnotate
-nmap <silent> \cl <Plug>VCSLog
-nmap <silent> \cL <Plug>VCSLock
-nmap <silent> \ci <Plug>VCSInfo
-nmap <silent> \cg <Plug>VCSGotoOriginal
-nmap <silent> \cG <Plug>VCSClearAndGotoOriginal
-nmap <silent> \cd <Plug>VCSDiff
-nmap <silent> \cD <Plug>VCSDelete
-nmap <silent> \cc <Plug>VCSCommit
-nmap <silent> \ca <Plug>VCSAdd
-vmap gx <Plug>NetrwBrowseXVis
-nmap gx <Plug>NetrwBrowseX
-vnoremap <silent> <Plug>NetrwBrowseXVis :call netrw#BrowseXVis()
-nnoremap <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(netrw#GX(),netrw#CheckIfRemote(netrw#GX()))
-nnoremap <silent> <Plug>VCSVimDiff :VCSVimDiff
-nnoremap <silent> <Plug>VCSUpdate :VCSUpdate
-nnoremap <silent> <Plug>VCSUnlock :VCSUnlock
-nnoremap <silent> <Plug>VCSStatus :VCSStatus
-nnoremap <silent> <Plug>VCSSplitAnnotate :VCSAnnotate!
-nnoremap <silent> <Plug>VCSReview :VCSReview
-nnoremap <silent> <Plug>VCSRevert :VCSRevert
-nnoremap <silent> <Plug>VCSLog :VCSLog
-nnoremap <silent> <Plug>VCSLock :VCSLock
-nnoremap <silent> <Plug>VCSInfo :VCSInfo
-nnoremap <silent> <Plug>VCSClearAndGotoOriginal :VCSGotoOriginal!
-nnoremap <silent> <Plug>VCSGotoOriginal :VCSGotoOriginal
-nnoremap <silent> <Plug>VCSDiff :VCSDiff
-nnoremap <silent> <Plug>VCSDelete :VCSDelete
-nnoremap <silent> <Plug>VCSCommit :VCSCommit
-nnoremap <silent> <Plug>VCSAnnotate :VCSAnnotate
-nnoremap <silent> <Plug>VCSAdd :VCSAdd
-let &cpo=s:cpo_save
-unlet s:cpo_save
+" ~/.config/nvim/init.vim
 
+set nocompatible	" be iMproved, required
 filetype off		" required
 
-" Vundle as Vim package manager
-" see :h vundle for more details or wiki for FAQ
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+let $v = $HOME.'/.vim'	" All files under one dir
+let s:bundle_dir = $v.'/bundle'	" Plugins's directory
 
-" let Vundle manage Vundle, requeried
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'editorconfig/editorconfig-vim'
+" vim-plug as Vim package manager
+let $vpm_script = s:bundle_dir.'/vim-plug/plug.vim'
+source $vpm_script
+
+" Start of plugin definition
+call plug#begin(s:bundle_dir)
+
+" vim-plug automanaged
+Plug 'junegunn/vim-plug'
+
+" Standard options
+Plug 'tpope/vim-sensible'
 
 " GUI enhancements
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'flazz/vim-colorschemes'
+Plug 'preservim/nerdtree'
 
-" Syntactic language support
-Plugin 'cespare/vim-toml'
-Plugin 'stephpy/vim-yaml'
-Plugin 'rust-lang/rust.vim'
-Plugin 'rhysd/vim-clang-format'
-Plugin 'fatih/vim-go'
-Plugin 'dag/vim-fish'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+" General functionality
+Plug 'easymotion/vim-easymotion'
+Plug 'jremmen/vim-ripgrep'
+Plug 'vim-utils/vim-man'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
-" All of your Plugins must be added before the following line
-call vundle#end()		" required
+" GIT functionality
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+
+" Edition functionality
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-commentary'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'godlygeek/tabular'
+
+" Intellisense, Language Server Protocol and syntax support
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sheerun/vim-polyglot'
+
+" End of plugin definition
+call plug#end()
 
 " Options
-filetype on
-filetype plugin on
-filetype indent on
-filetype plugin indent on	" required
+filetype plugin indent on	" required. Load plugins according to detected filetype.
+syntax on			" vim-sensible defined
 
-set fileencodings=utf-8,ucs-bom,default,latin1
-set suffixes=.bak,~,.o,.info,.swp,.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
-set helplang=es
-set cursorline
-set number
-syntax enable
+set autoindent			" Indent according to previous line.
+set backspace	=indent,eol,start	" Make backspace work as you would expect.
 
+set hidden			" Switch between buffers without having to save first.
+set laststatus	=2		" Always show statusline.
+set display	=lastline	" Show as much as possible of the last line.
 
+set showmode			" Show current mode in command-line.
+set showcmd			" Show already typed keys when more are expected.
+set showmatch			" Briefly shows matching bracket.
+set showtabline	=2		" Show always tab page labels.
+
+set ignorecase			" Ignores search case.
+set smartcase			" Overrides ignorecase when search has upper chars.
+set wrapscan			" Searches wrap around end-of-file.
+set incsearch			" Highlight while searching with / or ?.
+set hlsearch			" Keep matches highlighted.
+
+set background	=dark		" Defines color group for dark background.
+set lazyredraw			" Only redraw when necessary.
+set termguicolors		" Enables 24-bit RGB color.
+
+set cursorline			" Find the current line quickly.
+set number			" Shows line numbers.
+set guicursor	=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20	" nvim default.
+set mouse	=a		" Enables mouse support for all modes.
+set ttimeout			" Enables timeout when mapped key sequence is received.
+set ttimeoutlen	=1000		" Timeout in ms.
+
+set splitbelow			" Open new windows below the current window.
+set splitright			" Open new windows right of the current window.
+
+set nrformats	=bin,hex	" Number formats to inc/dec values with CTRL-A and CTRL-X.
+set report	=0		" Always report changed lines.
+
+set encoding	=utf-8		" String encoding used internally.
+set fileencodings	=utf-8,ucs-bom,default,latin1	" List of encodings when reading existing files.
+
+set nobackup			" Disables backup files.
+set nowritebackup		" Disables at all backup files.
+set undofile			" Enables undo history.
+set swapfile			" Enables a swapfile for the buffer.
+set backupdir	=$v/files/backup	" Directory for backup files.
+set directory	=$v/files/swap//	" Directory for the swap.
+set undodir	=$v/files/undo		" Directory for undo files.
+set viewdir	=$v/files/view		" Directory for views generated with `mkview`.
+
+set wildmenu			" Enables enhanced mode of command-line completition.
+set suffixes	=.bak,~,.o,.info,.swp,.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc	" Files with less priorityFiles with less priority.
+set helplang	=es
+
+set list			" Shows non-printable characters.
+if has('multi_byte') && &encoding ==# 'utf-8'
+	let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
+	let &fillchars = 'vert: ,diff: '  " ▚
+	let &showbreak = '↪ '
+else
+	let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
+endif
+
+" The fish shell is not very compatible to other shells and unexpectedly breaks things that use 'shell'.
+if &shell =~# 'fish$'
+	set shell=/bin/bash
+endif
+
+" Plugins' configuration
 let g:airline#extensions#tabline#enabled = 1
 
 " vim: set ft=vim :

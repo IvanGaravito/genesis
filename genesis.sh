@@ -168,15 +168,13 @@ MSG="Configuring NeoVim"
 begin_msg "$MSG"
 TMP=`cp -bf resources/vimrc ~/.config/nvim/init.vim`
 end_msg "$MSG" $? "$TMP"
-MSG="Installing Vundle.vim"
+MSG="Installing plugin manager"
 begin_msg "$MSG"
-if [ -d "~/.vim/bundle/Vundle.vim" ]; then
-	TMP=`cd ~/.vim/bundle/Vundle.vim; git pull 2>&1`
-else
-	TMP=`git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim 2>&1`
+if [ ! -d "~/.vim/bundle/vim-plug" ]; then
+	TMP=`git clone https://github.com/junegunn/vim-plug.git ~/.vim/bundle/vim-plug 2>&1`
 fi
 end_msg "$MSG" $? "$TMP"
-show_msg "Enter nvim and type ':PluginInstall' to install plugins"
+show_msg "Enter nvim and type ':PlugInstall' to install plugins"
 
 chapter "Chapter 11. TMUX Terminal creation"
 if [ "$XDG_SESSION_TYPE" = "x11" ]; then
